@@ -63,3 +63,34 @@ func (v *Vec3) LenSquared() float64 {
 func (v *Vec3) String() string {
 	return fmt.Sprintf("(%f, %f, %f)", v[0], v[1], v[2])
 }
+
+func Add(a, b *Vec3) *Vec3 {
+	return NewVec3(a[0]+b[0], a[1]+b[1], a[2]+b[2])
+}
+
+func Sub(a, b *Vec3) *Vec3 {
+	return NewVec3(a[0]-b[0], a[1]-b[1], a[2]-b[2])
+}
+
+func Mul(v *Vec3, t float64) *Vec3 {
+	return NewVec3(t*v[0], t*v[1], t*v[2])
+}
+
+func Div(v *Vec3, t float64) *Vec3 {
+	return Mul(v, 1/t)
+}
+
+func Dot(u, v *Vec3) float64 {
+	return u[0]*v[0] + u[1]*v[1] + u[2]*v[2]
+}
+
+func Cross(u, v *Vec3) *Vec3 {
+	return NewVec3(
+		u[1]*v[2]-u[2]*v[1],
+		u[2]*v[0]-u[0]*v[2],
+		u[0]*v[1]-u[1]*v[0])
+}
+
+func Normalise(v *Vec3) *Vec3 {
+	return Div(v, v.Len())
+}
