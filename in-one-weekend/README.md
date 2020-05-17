@@ -8,7 +8,7 @@
   - [x] 2.2  Creating an Image File
   - [x] 2.3  Adding a Progress Indicator
 - [ ] 3  The vec3 Class
-  - [ ] 3.1  Variables and Methods
+  - [x] 3.1  Variables and Methods
   - [ ] 3.2  vec3 Utility Functions
   - [ ] 3.3  Color Utility Functions
 - [ ] 4  Rays, a Simple Camera, and Background
