@@ -7,10 +7,10 @@
   - [x] 2.1  The PPM Image Format
   - [x] 2.2  Creating an Image File
   - [x] 2.3  Adding a Progress Indicator
-- [ ] 3  The vec3 Class
+- [x] 3  The vec3 Class
   - [x] 3.1  Variables and Methods
-  - [ ] 3.2  vec3 Utility Functions
-  - [ ] 3.3  Color Utility Functions
+  - [x] 3.2  vec3 Utility Functions
+  - [x] 3.3  Color Utility Functions
 - [ ] 4  Rays, a Simple Camera, and Background
   - [ ] 4.1  The ray Class
   - [ ] 4.2  Sending Rays Into the Scene

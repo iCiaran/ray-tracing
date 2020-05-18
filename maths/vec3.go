@@ -7,7 +7,7 @@ import (
 
 type Vec3 [3]float64
 
-type Color = Vec3
+type Colour = Vec3
 type Point3 = Vec3
 
 func NewVec3(e0, e1, e2 float64) *Vec3 {
@@ -23,6 +23,18 @@ func (v *Vec3) Y() float64 {
 }
 
 func (v *Vec3) Z() float64 {
+	return v[2]
+}
+
+func (v *Vec3) R() float64 {
+	return v[0]
+}
+
+func (v *Vec3) G() float64 {
+	return v[1]
+}
+
+func (v *Vec3) B() float64 {
 	return v[2]
 }
 

@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/iCiaran/ray-tracing/maths"
+	"github.com/iCiaran/ray-tracing/util/colour"
 )
 
 const (
@@ -16,15 +19,8 @@ func main() {
 	for j := imageHeight - 1; j >= 0; j-- {
 		fmt.Fprintf(os.Stderr, "Scanlines remaining: %d\n", j)
 		for i := 0; i < imageWidth; i++ {
-			r := float64(i) / (imageWidth - 1)
-			g := float64(j) / (imageHeight - 1)
-			b := 0.25
-
-			ir := int(255 * r)
-			ig := int(255 * g)
-			ib := int(255 * b)
-
-			fmt.Printf("%d %d %d\n", ir, ig, ib)
+			pixelColour := maths.NewVec3(float64(i)/(imageWidth-1), float64(j)/(imageHeight-1), 0.25)
+			colour.WriteColour(os.Stdout, pixelColour)
 		}
 	}
 	fmt.Fprintf(os.Stderr, "Done\n")
