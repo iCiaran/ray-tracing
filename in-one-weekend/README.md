@@ -14,9 +14,9 @@
 - [x] 4  Rays, a Simple Camera, and Background
   - [x] 4.1  The ray Class
   - [x] 4.2  Sending Rays Into the Scene
-- [ ] 5  Adding a Sphere
-  - [ ] 5.1  Ray-Sphere Intersection
-  - [ ] 5.2  Creating Our First Raytraced Image
+- [x] 5  Adding a Sphere
+  - [x] 5.1  Ray-Sphere Intersection
+  - [x] 5.2  Creating Our First Raytraced Image
 - [ ] 6  Surface Normals and Multiple Objects
   - [ ] 6.1  Shading with Surface Normals
   - [ ] 6.2  Simplifying the Ray-Sphere Intersection Code
