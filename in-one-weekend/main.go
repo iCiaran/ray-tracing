@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 
 	"github.com/iCiaran/ray-tracing/maths"
@@ -40,19 +41,26 @@ func main() {
 }
 
 func rayColour(r *maths.Ray) *maths.Colour {
-	if hitSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5, r) {
-		return maths.NewVec3(1.0, 0.0, 0.0)
+	t := hitSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5, r)
+	if t > 0 {
+		N := maths.Normalise(maths.Sub(r.At(t), maths.NewVec3(0.0, 0.0, -1.0)))
+		return maths.NewVec3(N.X()+1.0, N.Y()+1.0, N.Z()+1.0).Mul(0.5)
 	}
 	unitDirection := maths.Normalise(r.Direction())
-	t := 0.5 * (unitDirection.Y() + 1.0)
+	t = 0.5 * (unitDirection.Y() + 1.0)
 	return maths.Add(maths.Mul(&maths.Colour{1.0, 1.0, 1.0}, (1.0-t)), maths.Mul(&maths.Colour{0.5, 0.7, 1.0}, t))
 }
 
-func hitSphere(center *maths.Point3, radius float64, r *maths.Ray) bool {
+func hitSphere(center *maths.Point3, radius float64, r *maths.Ray) float64 {
 	oc := maths.Sub(r.Origin(), center)
 	a := maths.Dot(r.Direction(), r.Direction())
 	b := 2.0 * maths.Dot(oc, r.Direction())
 	c := maths.Dot(oc, oc) - radius*radius
 	discriminant := b*b - 4*a*c
-	return discriminant > 0
+
+	if discriminant < 0 {
+		return -1.0
+	}
+
+	return (-b - math.Sqrt(discriminant)) / (2.0 * a)
 }
