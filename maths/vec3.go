@@ -45,6 +45,13 @@ func (v *Vec3) Add(a *Vec3) *Vec3 {
 	return v
 }
 
+func (v *Vec3) Sub(a *Vec3) *Vec3 {
+	v[0] -= a[0]
+	v[1] -= a[1]
+	v[2] -= a[2]
+	return v
+}
+
 func (v *Vec3) Mul(t float64) *Vec3 {
 	v[0] *= t
 	v[1] *= t
