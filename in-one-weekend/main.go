@@ -16,14 +16,7 @@ const (
 )
 
 func main() {
-	viewportHeight := 2.0
-	viewportWidth := aspectRatio * viewportHeight
-	focalLength := 1.0
-
-	origin := maths.NewVec3(0.0, 0.0, 0.0)
-	horizontal := maths.NewVec3(viewportWidth, 0.0, 0.0)
-	vertical := maths.NewVec3(0.0, viewportHeight, 0.0)
-	lowerLeftCorner := maths.Sub(origin, maths.Div(horizontal, 2.0)).Sub(maths.Div(vertical, 2.0)).Sub(maths.NewVec3(0.0, 0.0, focalLength))
+	cam := maths.NewCamera(aspectRatio, 2.0, 1.0)
 
 	world := maths.NewHittableList()
 	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5))
@@ -36,7 +29,7 @@ func main() {
 		for i := 0; i < imageWidth; i++ {
 			u := float64(i) / float64(imageWidth-1)
 			v := float64(j) / float64(imageHeight-1)
-			r := maths.NewRay(origin, maths.Add(lowerLeftCorner, maths.Mul(horizontal, u)).Add(maths.Mul(vertical, v)).Sub(origin))
+			r := cam.GetRay(u, v)
 			pixelColour := rayColour(r, world)
 			colour.WriteColour(os.Stdout, pixelColour)
 		}
