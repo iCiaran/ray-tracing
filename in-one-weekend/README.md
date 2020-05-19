@@ -22,8 +22,8 @@
   - [x] 6.2  Simplifying the Ray-Sphere Intersection Code
   - [x] 6.3  An Abstraction for Hittable Objects
   - [x] 6.4  Front Faces Versus Back Faces
-  - [ ] 6.5  A List of Hittable Objects
-  - [ ] 6.6  Some New C++ Features
+  - [x] 6.5  A List of Hittable Objects
+  - [x] 6.6  Some New C++ Features
   - [ ] 6.7  Common Constants and Utility Functions
 - [ ] 7  Antialiasing
   - [ ] 7.1  Some Random Number Utilities

@@ -20,6 +20,6 @@ func NewHitRecord() *HitRecord {
 	return &HitRecord{}
 }
 
-type hittable interface {
+type Hittable interface {
 	Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool
 }
