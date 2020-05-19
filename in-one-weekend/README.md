@@ -35,13 +35,13 @@
   - [x] 8.4  Fixing Shadow Acne
   - [x] 8.5  True Lambertian Reflection
   - [x] 8.6  An Alternative Diffuse Formulation
-- [ ] 9  Metal
+- [x] 9  Metal
   - [x] 9.1  An Abstract Class for Materials
   - [x] 9.2  A Data Structure to Describe Ray-Object Intersections
   - [x] 9.3  Modeling Light Scatter and Reflectance
   - [x] 9.4  Mirrored Light Reflection
   - [x] 9.5  A Scene with Metal Spheres
-  - [ ] 9.6  Fuzzy Reflection
+  - [x] 9.6  Fuzzy Reflection
 - [ ] 10  Dielectrics
   - [ ] 10.1  Refraction
   - [ ] 10.2  Snell's Law
