@@ -25,9 +25,9 @@
   - [x] 6.5  A List of Hittable Objects
   - [x] 6.6  Some New C++ Features
   - [x] 6.7  Common Constants and Utility Functions
-- [ ] 7  Antialiasing
-  - [ ] 7.1  Some Random Number Utilities
-  - [ ] 7.2  Generating Pixels with Multiple Samples
+- [x] 7  Antialiasing
+  - [x] 7.1  Some Random Number Utilities
+  - [x] 7.2  Generating Pixels with Multiple Samples
 - [ ] 8  Diffuse Materials
   - [ ] 8.1  A Simple Diffuse Material
   - [ ] 8.2  Limiting the Number of Child Rays
