@@ -32,7 +32,7 @@
   - [x] 8.1  A Simple Diffuse Material
   - [x] 8.2  Limiting the Number of Child Rays
   - [x] 8.3  Using Gamma Correction for Accurate Color Intensity
-  - [ ] 8.4  Fixing Shadow Acne
+  - [x] 8.4  Fixing Shadow Acne
   - [ ] 8.5  True Lambertian Reflection
   - [ ]8.6  An Alternative Diffuse Formulation
 - [ ] 9  Metal
