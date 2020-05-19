@@ -25,7 +25,8 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if temp > tMin && temp < tMax {
 			rec.T = temp
 			rec.P = r.At(rec.T)
-			rec.Normal = Sub(rec.P, s.Center).Div(s.Radius)
+			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
+			rec.SetFaceNormal(r, outwardNormal)
 			return true
 		}
 
@@ -33,7 +34,8 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if temp > tMin && temp < tMax {
 			rec.T = temp
 			rec.P = r.At(rec.T)
-			rec.Normal = Sub(rec.P, s.Center).Div(s.Radius)
+			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
+			rec.SetFaceNormal(r, outwardNormal)
 			return true
 		}
 	}

@@ -1,13 +1,23 @@
 package maths
 
 type HitRecord struct {
-	P      *Point3
-	Normal *Vec3
-	T      float64
+	P         *Point3
+	Normal    *Vec3
+	T         float64
+	FrontFace bool
 }
 
-func NewHitRecord(p *Point3, normal *Vec3, t float64) *HitRecord {
-	return &HitRecord{p, normal, t}
+func (h *HitRecord) SetFaceNormal(r *Ray, outwardNormal *Vec3) {
+	h.FrontFace = Dot(r.Direction(), outwardNormal) < 0
+	h.Normal = outwardNormal
+
+	if !h.FrontFace {
+		h.Normal.Neg()
+	}
+}
+
+func NewHitRecord() *HitRecord {
+	return &HitRecord{}
 }
 
 type hittable interface {
