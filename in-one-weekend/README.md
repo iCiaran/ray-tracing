@@ -28,7 +28,7 @@
 - [x] 7  Antialiasing
   - [x] 7.1  Some Random Number Utilities
   - [x] 7.2  Generating Pixels with Multiple Samples
-- [ ] 8  Diffuse Materials
+- [x] 8  Diffuse Materials
   - [x] 8.1  A Simple Diffuse Material
   - [x] 8.2  Limiting the Number of Child Rays
   - [x] 8.3  Using Gamma Correction for Accurate Color Intensity
@@ -36,11 +36,11 @@
   - [x] 8.5  True Lambertian Reflection
   - [x] 8.6  An Alternative Diffuse Formulation
 - [ ] 9  Metal
-  - [ ] 9.1  An Abstract Class for Materials
-  - [ ] 9.2  A Data Structure to Describe Ray-Object Intersections
-  - [ ] 9.3  Modeling Light Scatter and Reflectance
-  - [ ] 9.4  Mirrored Light Reflection
-  - [ ] 9.5  A Scene with Metal Spheres
+  - [x] 9.1  An Abstract Class for Materials
+  - [x] 9.2  A Data Structure to Describe Ray-Object Intersections
+  - [x] 9.3  Modeling Light Scatter and Reflectance
+  - [x] 9.4  Mirrored Light Reflection
+  - [x] 9.5  A Scene with Metal Spheres
   - [ ] 9.6  Fuzzy Reflection
 - [ ] 10  Dielectrics
   - [ ] 10.1  Refraction

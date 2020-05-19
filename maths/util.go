@@ -23,6 +23,10 @@ func Clamp(x, min, max float64) float64 {
 	return x
 }
 
+func Reflect(vec, normal *Vec3) *Vec3 {
+	return Sub(vec, Mul(normal, 2*Dot(vec, normal)))
+}
+
 func Random() float64 {
 	return rand.Float64()
 }

@@ -5,10 +5,11 @@ import "math"
 type Sphere struct {
 	Center *Point3
 	Radius float64
+	Mat    Material
 }
 
-func NewSphere(center *Point3, radius float64) *Sphere {
-	return &Sphere{center, radius}
+func NewSphere(center *Point3, radius float64, mat Material) *Sphere {
+	return &Sphere{center, radius, mat}
 }
 
 func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
@@ -27,6 +28,7 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 			rec.P = r.At(rec.T)
 			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
+			rec.Mat = s.Mat
 			return true
 		}
 
@@ -36,6 +38,7 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 			rec.P = r.At(rec.T)
 			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
+			rec.Mat = s.Mat
 			return true
 		}
 	}

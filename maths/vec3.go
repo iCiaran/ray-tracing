@@ -91,6 +91,10 @@ func Sub(a, b *Vec3) *Vec3 {
 	return NewVec3(a[0]-b[0], a[1]-b[1], a[2]-b[2])
 }
 
+func MulVec(u, v *Vec3) *Vec3 {
+	return NewVec3(u[0]*v[0], u[1]*v[1], u[2]*v[2])
+}
+
 func Mul(v *Vec3, t float64) *Vec3 {
 	return NewVec3(t*v[0], t*v[1], t*v[2])
 }

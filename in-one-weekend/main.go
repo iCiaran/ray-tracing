@@ -20,8 +20,10 @@ func main() {
 	cam := maths.NewCamera(aspectRatio, 2.0, 1.0)
 
 	world := maths.NewHittableList()
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5))
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, -100.5, -1.0), 100))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5, maths.NewLambertian(maths.NewVec3(0.7, 0.3, 0.3))))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, -100.5, -1.0), 100, maths.NewLambertian(maths.NewVec3(0.8, 0.8, 0.0))))
+	world.Add(maths.NewSphere(maths.NewVec3(1.0, 0, -1.0), 0.5, maths.NewMetal(maths.NewVec3(0.8, 0.6, 0.2))))
+	world.Add(maths.NewSphere(maths.NewVec3(-1.0, 0, -1.0), 0.5, maths.NewMetal(maths.NewVec3(0.8, 0.8, 0.8))))
 
 	fmt.Printf("P3\n%d %d\n255\n", imageWidth, imageHeight)
 
@@ -48,8 +50,13 @@ func rayColour(r *maths.Ray, world maths.Hittable, depth int) *maths.Colour {
 
 	rec := maths.NewHitRecord()
 	if world.Hit(r, 0.001, math.Inf(1), rec) {
-		target := maths.Add(rec.P, rec.Normal).Add(maths.RandomInHemisphere(rec.Normal))
-		return rayColour(maths.NewRay(rec.P, maths.Sub(target, rec.P)), world, depth-1).Mul(0.5)
+		scattered := maths.NewEmptyRay()
+		attenuation := maths.NewVec3(0.0, 0.0, 0.0)
+
+		if rec.Mat.Scatter(r, rec, attenuation, scattered) {
+			return maths.MulVec(attenuation, rayColour(scattered, world, depth-1))
+		}
+		return maths.NewVec3(0.0, 0.0, 0.0)
 	}
 
 	unitDirection := maths.Normalise(r.Direction())

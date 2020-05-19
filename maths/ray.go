@@ -9,6 +9,10 @@ func NewRay(origin, direction *Vec3) *Ray {
 	return &Ray{origin, direction}
 }
 
+func NewEmptyRay() *Ray {
+	return &Ray{NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0)}
+}
+
 func (r *Ray) Origin() *Point3 {
 	return r.origin
 }
