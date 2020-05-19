@@ -48,8 +48,8 @@ func rayColour(r *maths.Ray, world maths.Hittable, depth int) *maths.Colour {
 
 	rec := maths.NewHitRecord()
 	if world.Hit(r, 0.001, math.Inf(1), rec) {
-		target := maths.Add(rec.P, rec.Normal).Add(maths.RandomInUnitSphere())
-		return rayColour(maths.NewRay(rec.P, maths.Sub(target, rec.P)), world, maxDepth-1).Mul(0.5)
+		target := maths.Add(rec.P, rec.Normal).Add(maths.RandomUnitVector())
+		return rayColour(maths.NewRay(rec.P, maths.Sub(target, rec.P)), world, depth-1).Mul(0.5)
 	}
 
 	unitDirection := maths.Normalise(r.Direction())

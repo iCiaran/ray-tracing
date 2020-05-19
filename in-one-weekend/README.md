@@ -33,7 +33,7 @@
   - [x] 8.2  Limiting the Number of Child Rays
   - [x] 8.3  Using Gamma Correction for Accurate Color Intensity
   - [x] 8.4  Fixing Shadow Acne
-  - [ ] 8.5  True Lambertian Reflection
+  - [x] 8.5  True Lambertian Reflection
   - [ ]8.6  An Alternative Diffuse Formulation
 - [ ] 9  Metal
   - [ ] 9.1  An Abstract Class for Materials

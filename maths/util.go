@@ -48,6 +48,13 @@ func RandomInUnitSphere() *Vec3 {
 	}
 }
 
+func RandomUnitVector() *Vec3 {
+	a := RandomInRange(0.0, 2*math.Pi)
+	z := RandomInRange(-1.0, 1.0)
+	r := math.Sqrt(1 - z*z)
+	return NewVec3(r*math.Cos(a), r*math.Sin(a), z)
+}
+
 func WriteColour(f *os.File, c *Colour, samplesPerPixel int) {
 
 	scale := 1.0 / float64(samplesPerPixel)
