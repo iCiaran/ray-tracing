@@ -55,6 +55,16 @@ func RandomUnitVector() *Vec3 {
 	return NewVec3(r*math.Cos(a), r*math.Sin(a), z)
 }
 
+func RandomInHemisphere(normal *Vec3) *Vec3 {
+	inUnitSphere := RandomInUnitSphere()
+
+	if Dot(inUnitSphere, normal) > 0.0 {
+		return inUnitSphere
+	}
+
+	return inUnitSphere.Neg()
+}
+
 func WriteColour(f *os.File, c *Colour, samplesPerPixel int) {
 
 	scale := 1.0 / float64(samplesPerPixel)

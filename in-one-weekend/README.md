@@ -34,7 +34,7 @@
   - [x] 8.3  Using Gamma Correction for Accurate Color Intensity
   - [x] 8.4  Fixing Shadow Acne
   - [x] 8.5  True Lambertian Reflection
-  - [ ]8.6  An Alternative Diffuse Formulation
+  - [x] 8.6  An Alternative Diffuse Formulation
 - [ ] 9  Metal
   - [ ] 9.1  An Abstract Class for Materials
   - [ ] 9.2  A Data Structure to Describe Ray-Object Intersections
