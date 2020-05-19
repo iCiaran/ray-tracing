@@ -17,7 +17,7 @@ func (h *HitRecord) SetFaceNormal(r *Ray, outwardNormal *Vec3) {
 }
 
 func NewHitRecord() *HitRecord {
-	return &HitRecord{}
+	return &HitRecord{NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0), 0, false}
 }
 
 type Hittable interface {

@@ -25,6 +25,10 @@ func main() {
 	vertical := maths.NewVec3(0.0, viewportHeight, 0.0)
 	lowerLeftCorner := maths.Sub(origin, maths.Div(horizontal, 2.0)).Sub(maths.Div(vertical, 2.0)).Sub(maths.NewVec3(0.0, 0.0, focalLength))
 
+	world := maths.NewHittableList()
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, -100.5, -1.0), 100))
+
 	fmt.Printf("P3\n%d %d\n255\n", imageWidth, imageHeight)
 
 	for j := imageHeight - 1; j >= 0; j-- {
@@ -33,34 +37,20 @@ func main() {
 			u := float64(i) / float64(imageWidth-1)
 			v := float64(j) / float64(imageHeight-1)
 			r := maths.NewRay(origin, maths.Add(lowerLeftCorner, maths.Mul(horizontal, u)).Add(maths.Mul(vertical, v)).Sub(origin))
-			pixelColour := rayColour(r)
+			pixelColour := rayColour(r, world)
 			colour.WriteColour(os.Stdout, pixelColour)
 		}
 	}
 	fmt.Fprintf(os.Stderr, "Done\n")
 }
 
-func rayColour(r *maths.Ray) *maths.Colour {
-	t := hitSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5, r)
-	if t > 0 {
-		N := maths.Normalise(maths.Sub(r.At(t), maths.NewVec3(0.0, 0.0, -1.0)))
-		return maths.NewVec3(N.X()+1.0, N.Y()+1.0, N.Z()+1.0).Mul(0.5)
+func rayColour(r *maths.Ray, world maths.Hittable) *maths.Colour {
+	rec := maths.NewHitRecord()
+	if world.Hit(r, 0, math.Inf(1), rec) {
+		return maths.Add(rec.Normal, maths.NewVec3(1.0, 1.0, 1.0)).Mul(0.5)
 	}
+
 	unitDirection := maths.Normalise(r.Direction())
-	t = 0.5 * (unitDirection.Y() + 1.0)
+	t := 0.5 * (unitDirection.Y() + 1.0)
 	return maths.Add(maths.Mul(&maths.Colour{1.0, 1.0, 1.0}, (1.0-t)), maths.Mul(&maths.Colour{0.5, 0.7, 1.0}, t))
-}
-
-func hitSphere(center *maths.Point3, radius float64, r *maths.Ray) float64 {
-	oc := maths.Sub(r.Origin(), center)
-	a := r.Direction().LenSquared()
-	halfB := maths.Dot(oc, r.Direction())
-	c := oc.LenSquared() - radius*radius
-	discriminant := halfB*halfB - a*c
-
-	if discriminant < 0 {
-		return -1.0
-	}
-
-	return (-halfB - math.Sqrt(discriminant)) / a
 }

@@ -17,14 +17,14 @@
 - [x] 5  Adding a Sphere
   - [x] 5.1  Ray-Sphere Intersection
   - [x] 5.2  Creating Our First Raytraced Image
-- [ ] 6  Surface Normals and Multiple Objects
+- [x] 6  Surface Normals and Multiple Objects
   - [x] 6.1  Shading with Surface Normals
   - [x] 6.2  Simplifying the Ray-Sphere Intersection Code
   - [x] 6.3  An Abstraction for Hittable Objects
   - [x] 6.4  Front Faces Versus Back Faces
   - [x] 6.5  A List of Hittable Objects
   - [x] 6.6  Some New C++ Features
-  - [ ] 6.7  Common Constants and Utility Functions
+  - [x] 6.7  Common Constants and Utility Functions
 - [ ] 7  Antialiasing
   - [ ] 7.1  Some Random Number Utilities
   - [ ] 7.2  Generating Pixels with Multiple Samples

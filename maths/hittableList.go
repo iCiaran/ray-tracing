@@ -17,7 +17,7 @@ func (l *HittableList) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if o.Hit(r, tMin, closest, tempRec) {
 			hitAnything = true
 			closest = tempRec.T
-			rec = tempRec
+			*rec = *tempRec
 		}
 	}
 
