@@ -2,6 +2,7 @@ package maths
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"os"
 	"time"
@@ -54,6 +55,12 @@ func WriteColour(f *os.File, c *Colour, samplesPerPixel int) {
 	r := scale * c.R()
 	g := scale * c.G()
 	b := scale * c.B()
+
+	// Gamma correction for gamma=2.0
+
+	r = math.Sqrt(r)
+	g = math.Sqrt(g)
+	b = math.Sqrt(b)
 
 	ir := int(256 * Clamp(r, 0.0, 0.999))
 	ig := int(256 * Clamp(g, 0.0, 0.999))
