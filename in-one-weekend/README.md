@@ -29,7 +29,7 @@
   - [x] 7.1  Some Random Number Utilities
   - [x] 7.2  Generating Pixels with Multiple Samples
 - [ ] 8  Diffuse Materials
-  - [ ] 8.1  A Simple Diffuse Material
+  - [x] 8.1  A Simple Diffuse Material
   - [ ] 8.2  Limiting the Number of Child Rays
   - [ ] 8.3  Using Gamma Correction for Accurate Color Intensity
   - [ ] 8.4  Fixing Shadow Acne

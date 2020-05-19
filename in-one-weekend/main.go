@@ -43,7 +43,8 @@ func main() {
 func rayColour(r *maths.Ray, world maths.Hittable) *maths.Colour {
 	rec := maths.NewHitRecord()
 	if world.Hit(r, 0, math.Inf(1), rec) {
-		return maths.Add(rec.Normal, maths.NewVec3(1.0, 1.0, 1.0)).Mul(0.5)
+		target := maths.Add(rec.P, rec.Normal).Add(maths.RandomInUnitSphere())
+		return rayColour(maths.NewRay(rec.P, maths.Sub(target, rec.P)), world).Mul(0.5)
 	}
 
 	unitDirection := maths.Normalise(r.Direction())
