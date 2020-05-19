@@ -30,7 +30,7 @@
   - [x] 7.2  Generating Pixels with Multiple Samples
 - [ ] 8  Diffuse Materials
   - [x] 8.1  A Simple Diffuse Material
-  - [ ] 8.2  Limiting the Number of Child Rays
+  - [x] 8.2  Limiting the Number of Child Rays
   - [ ] 8.3  Using Gamma Correction for Accurate Color Intensity
   - [ ] 8.4  Fixing Shadow Acne
   - [ ] 8.5  True Lambertian Reflection

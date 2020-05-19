@@ -13,6 +13,7 @@ const (
 	imageWidth      = 384
 	imageHeight     = int(imageWidth / aspectRatio)
 	samplesPerPixel = 100
+	maxDepth        = 50
 )
 
 func main() {
@@ -32,7 +33,7 @@ func main() {
 				u := (float64(i) + maths.Random()) / float64(imageWidth-1)
 				v := (float64(j) + maths.Random()) / float64(imageHeight-1)
 				r := cam.GetRay(u, v)
-				pixelColour.Add(rayColour(r, world))
+				pixelColour.Add(rayColour(r, world, maxDepth))
 			}
 			maths.WriteColour(os.Stdout, pixelColour, samplesPerPixel)
 		}
@@ -40,11 +41,15 @@ func main() {
 	fmt.Fprintf(os.Stderr, "Done\n")
 }
 
-func rayColour(r *maths.Ray, world maths.Hittable) *maths.Colour {
+func rayColour(r *maths.Ray, world maths.Hittable, depth int) *maths.Colour {
+	if depth <= 0 {
+		return maths.NewVec3(0.0, 0.0, 0.0)
+	}
+
 	rec := maths.NewHitRecord()
 	if world.Hit(r, 0, math.Inf(1), rec) {
 		target := maths.Add(rec.P, rec.Normal).Add(maths.RandomInUnitSphere())
-		return rayColour(maths.NewRay(rec.P, maths.Sub(target, rec.P)), world).Mul(0.5)
+		return rayColour(maths.NewRay(rec.P, maths.Sub(target, rec.P)), world, maxDepth-1).Mul(0.5)
 	}
 
 	unitDirection := maths.Normalise(r.Direction())
