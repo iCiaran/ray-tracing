@@ -83,6 +83,10 @@ func RandomInHemisphere(normal *Vec3) *Vec3 {
 	return inUnitSphere.Neg()
 }
 
+func DegreesToRadians(d float64) float64 {
+	return d * math.Pi / 180.0
+}
+
 func WriteColour(f *os.File, c *Colour, samplesPerPixel int) {
 
 	scale := 1.0 / float64(samplesPerPixel)

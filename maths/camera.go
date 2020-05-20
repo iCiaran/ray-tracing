@@ -1,5 +1,7 @@
 package maths
 
+import "math"
+
 type Camera struct {
 	origin          *Point3
 	lowerLeftCorner *Point3
@@ -7,8 +9,13 @@ type Camera struct {
 	vertical        *Vec3
 }
 
-func NewCamera(aspectRatio, viewportHeight, focalLength float64) *Camera {
+func NewCamera(aspectRatio, focalLength, vFov float64) *Camera {
 	cam := Camera{}
+
+	theta := DegreesToRadians(vFov)
+	h := math.Tan(theta / 2.0)
+
+	viewportHeight := 2.0 * h
 	viewportWidth := aspectRatio * viewportHeight
 
 	cam.origin = NewVec3(0.0, 0.0, 0.0)
