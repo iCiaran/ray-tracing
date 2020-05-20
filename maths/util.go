@@ -35,6 +35,12 @@ func Refract(uv, n *Vec3, etaiOverEtat float64) *Vec3 {
 	return rOutParallel.Add(rOutPerp)
 }
 
+func Schlick(cos, refIdx float64) float64 {
+	r0 := (1.0 - refIdx) / (1.0 + refIdx)
+	r0 = r0 * r0
+	return r0 + (1.0-r0)*math.Pow((1.0-cos), 5)
+}
+
 func Random() float64 {
 	return rand.Float64()
 }

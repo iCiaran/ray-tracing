@@ -21,7 +21,7 @@ func (d *Dielectric) Scatter(rIn *Ray, rec *HitRecord, attenuation *Colour, scat
 	unitDirection := Normalise(rIn.Direction())
 	cosTheta := math.Min(Dot(Neg(unitDirection), rec.Normal), 1.0)
 	sinTheta := math.Sqrt(1.0 - cosTheta*cosTheta)
-	if etaiOverEtat*sinTheta > 1.0 {
+	if etaiOverEtat*sinTheta > 1.0 || Random() < Schlick(cosTheta, etaiOverEtat) {
 		reflected := Reflect(unitDirection, rec.Normal)
 		*scattered = *NewRay(rec.P, reflected)
 		return true
