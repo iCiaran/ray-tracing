@@ -103,6 +103,10 @@ func Div(v *Vec3, t float64) *Vec3 {
 	return Mul(v, 1/t)
 }
 
+func Neg(v *Vec3) *Vec3 {
+	return Mul(v, -1.0)
+}
+
 func Dot(u, v *Vec3) float64 {
 	return u[0]*v[0] + u[1]*v[1] + u[2]*v[2]
 }

@@ -27,6 +27,14 @@ func Reflect(vec, normal *Vec3) *Vec3 {
 	return Sub(vec, Mul(normal, 2*Dot(vec, normal)))
 }
 
+func Refract(uv, n *Vec3, etaiOverEtat float64) *Vec3 {
+	cosTheta := Dot(Neg(uv), n)
+	rOutParallel := Mul(n, cosTheta).Add(uv).Mul(etaiOverEtat)
+	rOutPerp := Mul(n, -math.Sqrt(1.0-rOutParallel.LenSquared()))
+
+	return rOutParallel.Add(rOutPerp)
+}
+
 func Random() float64 {
 	return rand.Float64()
 }
