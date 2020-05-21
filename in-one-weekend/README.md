@@ -42,17 +42,17 @@
   - [x] 9.4  Mirrored Light Reflection
   - [x] 9.5  A Scene with Metal Spheres
   - [x] 9.6  Fuzzy Reflection
-- [ ] 10  Dielectrics
-  - [ ] 10.1  Refraction
-  - [ ] 10.2  Snell's Law
-  - [ ] 10.3  Total Internal Reflection
-  - [ ] 10.4  Schlick Approximation
-  - [ ] 10.5  Modeling a Hollow Glass Sphere
-- [ ] 11  Positionable Camera
-  - [ ] 11.1  Camera Viewing Geometry
-  - [ ] 11.2  Positioning and Orienting the Camera
-- [ ] 12  Defocus Blur
-  - [ ] 12.1  A Thin Lens Approximation
-  - [ ] 12.2  Generating Sample Rays
+- [x] 10  Dielectrics
+  - [x] 10.1  Refraction
+  - [x] 10.2  Snell's Law
+  - [x] 10.3  Total Internal Reflection
+  - [x] 10.4  Schlick Approximation
+  - [x] 10.5  Modeling a Hollow Glass Sphere
+- [x] 11  Positionable Camera
+  - [x] 11.1  Camera Viewing Geometry
+  - [x] 11.2  Positioning and Orienting the Camera
+- [x] 12  Defocus Blur
+  - [x] 12.1  A Thin Lens Approximation
+  - [x] 12.2  Generating Sample Rays
 - [ ] 13  Where Next?
   - [ ] 13.1  A Final Render

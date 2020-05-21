@@ -83,6 +83,15 @@ func RandomInHemisphere(normal *Vec3) *Vec3 {
 	return inUnitSphere.Neg()
 }
 
+func RandomInUnitDisk() *Vec3 {
+	for {
+		p := NewVec3(RandomInRange(-1.0, 1.0), RandomInRange(-1.0, 1.0), 0.0)
+		if p.LenSquared() < 1.0 {
+			return p
+		}
+	}
+}
+
 func DegreesToRadians(d float64) float64 {
 	return d * math.Pi / 180.0
 }

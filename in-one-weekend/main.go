@@ -17,7 +17,13 @@ const (
 )
 
 func main() {
-	cam := maths.NewCamera(maths.NewVec3(-2.0, 2.0, 1.0), maths.NewVec3(0.0, 0.0, -1.0), maths.NewVec3(0.0, 1.0, 0.0), 20.0, aspectRatio)
+	lookFrom := maths.NewVec3(3.0, 3.0, 2.0)
+	lookAt := maths.NewVec3(0.0, 0.0, -1.0)
+	up := maths.NewVec3(0.0, 1.0, 0.0)
+	distToFocus := maths.Sub(lookFrom, lookAt).Len()
+	aperture := 2.0
+
+	cam := maths.NewCamera(lookFrom, lookAt, up, 20.0, aspectRatio, aperture, distToFocus)
 
 	world := maths.NewHittableList()
 	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5, maths.NewLambertian(maths.NewVec3(0.1, 0.2, 0.5))))
