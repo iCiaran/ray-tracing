@@ -54,5 +54,6 @@
 - [x] 12  Defocus Blur
   - [x] 12.1  A Thin Lens Approximation
   - [x] 12.2  Generating Sample Rays
-- [ ] 13  Where Next?
-  - [ ] 13.1  A Final Render
+- [x] 13  Where Next?
+  - [x] 13.1  A Final Render
+  - [x] 13.2  Config file

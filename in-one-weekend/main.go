@@ -9,24 +9,28 @@ import (
 	"github.com/iCiaran/ray-tracing/maths"
 )
 
-const (
-	aspectRatio     = 16.0 / 9.0
-	imageWidth      = 384
-	imageHeight     = int(imageWidth / aspectRatio)
-	samplesPerPixel = 100
-	maxDepth        = 50
-)
-
 var maxBounce = 0
 
 func main() {
-	lookFrom := maths.NewVec3(13.0, 2.0, 3.0)
-	lookAt := maths.NewVec3(0.0, 0.0, 0.0)
-	up := maths.NewVec3(0.0, 1.0, 0.0)
-	distToFocus := 10.0
-	aperture := 0.1
+	config, err := loadConfig("config.json")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
 
-	cam := maths.NewCamera(lookFrom, lookAt, up, 20.0, aspectRatio, aperture, distToFocus)
+	aspectRatio := config.Aspect.Width / config.Aspect.Height
+	imageWidth := config.ImageWidth
+	imageHeight := int(float64(imageWidth) / aspectRatio)
+	samplesPerPixel := config.SamplesPerPixel
+	maxDepth := config.MaxDepth
+	lookFrom := maths.NewVec3(config.Camera.From.X, config.Camera.From.Y, config.Camera.From.Z)
+	lookAt := maths.NewVec3(config.Camera.To.X, config.Camera.To.Y, config.Camera.To.Z)
+	up := maths.NewVec3(config.Camera.Up.X, config.Camera.Up.Y, config.Camera.Up.Z)
+	distToFocus := config.Camera.DistToFocus
+	aperture := config.Camera.Aperture
+	vFov := config.Camera.VFov
+
+	cam := maths.NewCamera(lookFrom, lookAt, up, vFov, aspectRatio, aperture, distToFocus)
 
 	world := randomScene()
 	start := time.Now()
@@ -41,7 +45,7 @@ func main() {
 				u := (float64(i) + maths.Random()) / float64(imageWidth-1)
 				v := (float64(j) + maths.Random()) / float64(imageHeight-1)
 				r := cam.GetRay(u, v)
-				pixelColour.Add(rayColour(r, world, maxDepth))
+				pixelColour.Add(rayColour(r, world, maxDepth, maxDepth))
 			}
 			maths.WriteColour(os.Stdout, pixelColour, samplesPerPixel)
 		}
@@ -50,7 +54,7 @@ func main() {
 	fmt.Fprintf(os.Stderr, "Done Time: %v -- Max Bounces: %d\n", time.Now().Sub(start), maxBounce)
 }
 
-func rayColour(r *maths.Ray, world maths.Hittable, depth int) *maths.Colour {
+func rayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int) *maths.Colour {
 	if maxDepth-depth > maxBounce {
 		maxBounce = maxDepth - depth
 	}
@@ -65,7 +69,7 @@ func rayColour(r *maths.Ray, world maths.Hittable, depth int) *maths.Colour {
 		attenuation := maths.NewVec3(0.0, 0.0, 0.0)
 
 		if rec.Mat.Scatter(r, rec, attenuation, scattered) {
-			return maths.MulVec(attenuation, rayColour(scattered, world, depth-1))
+			return maths.MulVec(attenuation, rayColour(scattered, world, maxDepth, depth-1))
 		}
 		return maths.NewVec3(0.0, 0.0, 0.0)
 	}
