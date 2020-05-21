@@ -9,19 +9,22 @@ type Camera struct {
 	vertical        *Vec3
 }
 
-func NewCamera(aspectRatio, focalLength, vFov float64) *Camera {
+func NewCamera(lookFrom, lookAt, up *Vec3, vFov, aspectRatio float64) *Camera {
 	cam := Camera{}
 
 	theta := DegreesToRadians(vFov)
 	h := math.Tan(theta / 2.0)
-
 	viewportHeight := 2.0 * h
 	viewportWidth := aspectRatio * viewportHeight
 
-	cam.origin = NewVec3(0.0, 0.0, 0.0)
-	cam.horizontal = NewVec3(viewportWidth, 0.0, 0.0)
-	cam.vertical = NewVec3(0.0, viewportHeight, 0.0)
-	cam.lowerLeftCorner = Sub(cam.origin, Div(cam.horizontal, 2.0)).Sub(Div(cam.vertical, 2.0)).Sub(NewVec3(0.0, 0.0, focalLength))
+	w := Sub(lookFrom, lookAt).Normalise()
+	u := Cross(up, w).Normalise()
+	v := Cross(w, u)
+
+	cam.origin = lookFrom
+	cam.horizontal = Mul(u, viewportWidth)
+	cam.vertical = Mul(v, viewportHeight)
+	cam.lowerLeftCorner = Sub(cam.origin, Div(cam.horizontal, 2.0)).Sub(Div(cam.vertical, 2.0)).Sub(w)
 
 	return &cam
 }

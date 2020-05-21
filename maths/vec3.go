@@ -79,6 +79,10 @@ func (v *Vec3) LenSquared() float64 {
 	return v[0]*v[0] + v[1]*v[1] + v[2]*v[2]
 }
 
+func (v *Vec3) Normalise() *Vec3 {
+	return v.Div(v.Len())
+}
+
 func (v *Vec3) String() string {
 	return fmt.Sprintf("(%f, %f, %f)", v[0], v[1], v[2])
 }

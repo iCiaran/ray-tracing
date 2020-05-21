@@ -17,13 +17,14 @@ const (
 )
 
 func main() {
-	cam := maths.NewCamera(aspectRatio, 1.0, 90.0)
-
-	r := math.Cos(math.Pi / 4)
+	cam := maths.NewCamera(maths.NewVec3(-2.0, 2.0, 1.0), maths.NewVec3(0.0, 0.0, -1.0), maths.NewVec3(0.0, 1.0, 0.0), 20.0, aspectRatio)
 
 	world := maths.NewHittableList()
-	world.Add(maths.NewSphere(maths.NewVec3(-r, 0.0, -1.0), r, maths.NewLambertian(maths.NewVec3(0.0, 0.0, 1.0))))
-	world.Add(maths.NewSphere(maths.NewVec3(r, 0.0, -1.0), r, maths.NewLambertian(maths.NewVec3(1.0, 0.0, 0.0))))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, -1.0), 0.5, maths.NewLambertian(maths.NewVec3(0.1, 0.2, 0.5))))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, -100.5, -1.0), 100, maths.NewLambertian(maths.NewVec3(0.8, 0.8, 0.0))))
+	world.Add(maths.NewSphere(maths.NewVec3(1.0, 0, -1.0), 0.5, maths.NewMetal(maths.NewVec3(0.8, 0.6, 0.2), 0.0)))
+	world.Add(maths.NewSphere(maths.NewVec3(-1.0, 0, -1.0), 0.5, maths.NewDielectric(1.5)))
+	world.Add(maths.NewSphere(maths.NewVec3(-1.0, 0, -1.0), -0.45, maths.NewDielectric(1.5)))
 
 	fmt.Printf("P3\n%d %d\n255\n", imageWidth, imageHeight)
 
