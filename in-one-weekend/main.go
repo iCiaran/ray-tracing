@@ -34,6 +34,7 @@ func main() {
 	cam := maths.NewCamera(lookFrom, lookAt, up, vFov, aspectRatio, aperture, distToFocus)
 
 	world := randomScene()
+
 	start := time.Now()
 
 	fmt.Printf("P3\n%d %d\n255\n", imageWidth, imageHeight)
@@ -103,24 +104,77 @@ func randomScene() *maths.HittableList {
 				maths.Sub(center, maths.NewVec3(-4.0, r, 0.0)).Len() > 0.9 {
 
 				switch {
-				case chooseMat < 0.5:
+				case chooseMat < 0.3:
 					albedo := maths.MulVec(maths.RandomPoint(), maths.RandomPoint())
 					mat := maths.NewLambertian(albedo)
 					world.Add(maths.NewSphere(center, r, mat))
-				case chooseMat < 0.85:
+				case chooseMat < 0.6:
 					albedo := maths.RandomPointInRange(0.5, 1.0)
 					fuzz := maths.RandomInRange(0.0, 0.5)
 					mat := maths.NewMetal(albedo, fuzz)
 					world.Add(maths.NewSphere(center, r, mat))
-				default:
+				case chooseMat < 0.7:
 					mat := maths.NewDielectric(1.5)
 					world.Add(maths.NewSphere(center, r, mat))
+				case chooseMat < 0.8:
+					albedo := maths.MulVec(maths.RandomPoint(), maths.RandomPoint())
+					mat := maths.NewLambertian(albedo)
+					addCube(world, r, center, mat)
+				case chooseMat < 0.9:
+					albedo := maths.RandomPointInRange(0.5, 1.0)
+					fuzz := maths.RandomInRange(0.0, 0.5)
+					mat := maths.NewMetal(albedo, fuzz)
+					addCube(world, r, center, mat)
+				case chooseMat < 1.0:
+					mat := maths.NewDielectric(1.5)
+					addCube(world, r, center, mat)
 				}
 			}
 		}
 	}
 
 	return world
+}
+
+func addCube(world *maths.HittableList, size float64, center *maths.Point3, mat maths.Material) {
+	v1 := maths.NewVec3(-size, size, size).Add(center)   // left front top
+	v2 := maths.NewVec3(size, size, size).Add(center)    // right front top
+	v3 := maths.NewVec3(-size, -size, size).Add(center)  // left front bottom
+	v4 := maths.NewVec3(size, -size, size).Add(center)   // right front bottom
+	v5 := maths.NewVec3(-size, size, -size).Add(center)  // left back top
+	v6 := maths.NewVec3(size, size, -size).Add(center)   // right back top
+	v7 := maths.NewVec3(-size, -size, -size).Add(center) // left back bottom
+	v8 := maths.NewVec3(size, -size, -size).Add(center)  // right back bottom
+	nFront := maths.NewVec3(0.0, 0.0, 1.0)
+	nBack := maths.NewVec3(0.0, 0.0, -1.0)
+	nLeft := maths.NewVec3(-1.0, 0.0, 0.0)
+	nRight := maths.NewVec3(1.0, 0.0, 0.0)
+	nUp := maths.NewVec3(0.0, 1.0, 0.0)
+	nDown := maths.NewVec3(0.0, -1.0, 0.0)
+
+	// Front v3 v4 v2 / v2 v1 v3
+	world.Add(maths.NewTriangle(v3, v4, v2, nFront, nFront, nFront, mat, true))
+	world.Add(maths.NewTriangle(v2, v1, v3, nFront, nFront, nFront, mat, true))
+
+	// Back v8 v7 v5 / v5 v6 v8
+	world.Add(maths.NewTriangle(v8, v7, v5, nBack, nBack, nBack, mat, true))
+	world.Add(maths.NewTriangle(v5, v6, v8, nBack, nBack, nBack, mat, true))
+
+	// Right v4 v8 v6 / v6 v2 v4
+	world.Add(maths.NewTriangle(v4, v8, v6, nRight, nRight, nRight, mat, true))
+	world.Add(maths.NewTriangle(v6, v2, v4, nRight, nRight, nRight, mat, true))
+
+	// Left v7 v3 v1 / v1 v5 v7
+	world.Add(maths.NewTriangle(v7, v3, v1, nLeft, nLeft, nLeft, mat, true))
+	world.Add(maths.NewTriangle(v1, v5, v7, nLeft, nLeft, nLeft, mat, true))
+
+	// Top v1 v2 v6 / v6 v5 v1
+	world.Add(maths.NewTriangle(v1, v2, v6, nUp, nUp, nUp, mat, true))
+	world.Add(maths.NewTriangle(v6, v5, v1, nUp, nUp, nUp, mat, true))
+
+	// Bottom v4 v3 v7 / v7 v8 v4
+	world.Add(maths.NewTriangle(v4, v3, v7, nDown, nDown, nDown, mat, true))
+	world.Add(maths.NewTriangle(v7, v8, v4, nDown, nDown, nDown, mat, true))
 }
 
 func pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *maths.HittableList, cam *maths.Camera) *maths.Colour {
