@@ -50,17 +50,13 @@ func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if t.smooth {
 			rec.SetFaceNormal(r, t.smoothNormal(u, v))
 		} else {
-			rec.SetFaceNormal(r, t.flatNormal())
+			rec.SetFaceNormal(r, Cross(e1, e2))
 		}
 		rec.Mat = t.Mat
 		return true
 	}
 
 	return false
-}
-
-func (t *Triangle) flatNormal() *Vec3 {
-	return Add(t.N[0], t.N[1]).Add(t.N[2]).Div(3)
 }
 
 func (t *Triangle) smoothNormal(u, v float64) *Vec3 {
