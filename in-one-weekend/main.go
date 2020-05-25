@@ -40,13 +40,7 @@ func main() {
 	for j := imageHeight - 1; j >= 0; j-- {
 		lineStart := time.Now()
 		for i := 0; i < imageWidth; i++ {
-			pixelColour := maths.NewVec3(0.0, 0.0, 0.0)
-			for s := 0; s < samplesPerPixel; s++ {
-				u := (float64(i) + maths.Random()) / float64(imageWidth-1)
-				v := (float64(j) + maths.Random()) / float64(imageHeight-1)
-				r := cam.GetRay(u, v)
-				pixelColour.Add(rayColour(r, world, maxDepth, maxDepth))
-			}
+			pixelColour := pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth, world, cam)
 			maths.WriteColour(os.Stdout, pixelColour, samplesPerPixel)
 		}
 		fmt.Fprintf(os.Stderr, "Scanlines remaining: %d -- Last time: %v\n", j, time.Now().Sub(lineStart))
@@ -126,4 +120,15 @@ func randomScene() *maths.HittableList {
 	}
 
 	return world
+}
+
+func pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *maths.HittableList, cam *maths.Camera) *maths.Colour {
+	pixelColour := maths.NewVec3(0.0, 0.0, 0.0)
+	for s := 0; s < samplesPerPixel; s++ {
+		u := (float64(i) + maths.Random()) / float64(imageWidth-1)
+		v := (float64(j) + maths.Random()) / float64(imageHeight-1)
+		r := cam.GetRay(u, v)
+		pixelColour.Add(rayColour(r, world, maxDepth, maxDepth))
+	}
+	return pixelColour
 }
