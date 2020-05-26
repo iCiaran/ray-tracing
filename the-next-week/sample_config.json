@@ -1,0 +1,30 @@
+{
+    "aspect":
+    {
+            "width":16.0,
+            "height": 9.0
+    },
+    "imageWidth": 384,
+    "samplesPerPixel": 100,
+    "maxDepth": 50,
+    "camera":{
+        "from": {
+            "x": 13.0,
+            "y": 2.0,
+            "z": 3.0
+        },
+        "to": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "up":{
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0
+        },
+        "distToFocus": 10.0,
+        "aperture": 0.1,
+        "vFov": 20.0
+    }
+}
