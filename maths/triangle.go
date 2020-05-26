@@ -61,7 +61,7 @@ func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 	return false
 }
 
-func (t *Triangle) BoundingBox(t0, t1 float64, outputBox *AABB) {
+func (t *Triangle) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 	smallX := math.Min(math.Min(t.V[0].X(), t.V[1].X()), t.V[2].X())
 	smallY := math.Min(math.Min(t.V[0].Y(), t.V[1].Y()), t.V[2].Y())
 	smallZ := math.Min(math.Min(t.V[0].Z(), t.V[1].Z()), t.V[2].Z())
@@ -70,6 +70,7 @@ func (t *Triangle) BoundingBox(t0, t1 float64, outputBox *AABB) {
 	bigZ := math.Max(math.Max(t.V[0].Z(), t.V[1].Z()), t.V[2].Z())
 
 	*outputBox = *NewAABB(NewVec3(smallX, smallY, smallZ), NewVec3(bigX, bigY, bigZ))
+	return true
 }
 
 func (t *Triangle) smoothNormal(u, v float64) *Vec3 {
