@@ -24,6 +24,30 @@ func (l *HittableList) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 	return hitAnything
 }
 
+func (l *HittableList) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
+	if len(l.objects) == 0 {
+		return false
+	}
+
+	tempBox := NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))
+	firstBox := true
+
+	for _, o := range l.objects {
+		if !o.BoundingBox(t0, t1, tempBox) {
+			return false
+		}
+
+		if firstBox {
+			*outputBox = *tempBox
+		} else {
+			*outputBox = *surroundingBox(outputBox, tempBox)
+			firstBox = false
+		}
+
+	}
+	return true
+}
+
 func (l *HittableList) Add(object Hittable) {
 	l.objects = append(l.objects, object)
 }

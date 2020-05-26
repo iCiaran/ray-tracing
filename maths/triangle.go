@@ -1,5 +1,7 @@
 package maths
 
+import "math"
+
 type Triangle struct {
 	V      []*Point3
 	N      []*Vec3
@@ -57,6 +59,17 @@ func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 	}
 
 	return false
+}
+
+func (t *Triangle) BoundingBox(t0, t1 float64, outputBox *AABB) {
+	smallX := math.Min(math.Min(t.V[0].X(), t.V[1].X()), t.V[2].X())
+	smallY := math.Min(math.Min(t.V[0].Y(), t.V[1].Y()), t.V[2].Y())
+	smallZ := math.Min(math.Min(t.V[0].Z(), t.V[1].Z()), t.V[2].Z())
+	bigX := math.Max(math.Max(t.V[0].X(), t.V[1].X()), t.V[2].X())
+	bigY := math.Max(math.Max(t.V[0].Y(), t.V[1].Y()), t.V[2].Y())
+	bigZ := math.Max(math.Max(t.V[0].Z(), t.V[1].Z()), t.V[2].Z())
+
+	*outputBox = *NewAABB(NewVec3(smallX, smallY, smallZ), NewVec3(bigX, bigY, bigZ))
 }
 
 func (t *Triangle) smoothNormal(u, v float64) *Vec3 {

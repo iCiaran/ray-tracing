@@ -44,3 +44,9 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 	}
 	return false
 }
+
+func (s *Sphere) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
+	*outputBox = *NewAABB(Sub(s.Center, NewVec3(s.Radius, s.Radius, s.Radius)),
+		Add(s.Center, NewVec3(s.Radius, s.Radius, s.Radius)))
+	return true
+}
