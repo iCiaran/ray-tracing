@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/iCiaran/ray-tracing/maths"
+	"github.com/iCiaran/ray-tracing/model"
 )
 
 var maxBounce = 0
@@ -33,8 +34,12 @@ func main() {
 
 	cam := maths.NewCamera(lookFrom, lookAt, up, vFov, aspectRatio, aperture, distToFocus)
 
+	model := model.NewModel()
+	teapot := model.LoadObj("../resources/teapot-normals.obj")
+
 	world := maths.NewHittableList()
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, 0.0), 1.0, maths.NewLambertian(maths.NewVec3(0.5, 0.5, 0.5))))
+	world.Add(maths.NewBVHNode(teapot, 0.0, 1.0))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, -1008.0, 0.0), 1000.0, maths.NewLambertian(maths.NewVec3(0.2, 0.2, 0.2))))
 
 	start := time.Now()
 

@@ -49,6 +49,14 @@ func RandomInRange(min, max float64) float64 {
 	return min + (max-min)*Random()
 }
 
+func RandomInt() int {
+	return rand.Int()
+}
+
+func RandomIntInRange(min, max int) int {
+	return rand.Intn(max-min) + min
+}
+
 func RandomPoint() *Vec3 {
 	return NewVec3(Random(), Random(), Random())
 }
