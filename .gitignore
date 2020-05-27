@@ -5,3 +5,5 @@
 *.exe
 .vscode
 config.json
+*.ppm
+!*/out/*ppm
