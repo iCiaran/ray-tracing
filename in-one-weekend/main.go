@@ -35,7 +35,7 @@ func main() {
 	cam := maths.NewCamera(lookFrom, lookAt, up, vFov, aspectRatio, aperture, distToFocus)
 
 	model := model.NewModel()
-	world := model.LoadObj("resources/teapot-normals.obj")
+	world := model.LoadObj("../resources/teapot-normals.obj")
 
 	world.Add(maths.NewSphere(maths.NewVec3(0.0, -1008.0, 0.0), 1000.0, maths.NewLambertian(maths.NewVec3(0.2, 0.2, 0.2))))
 	start := time.Now()
