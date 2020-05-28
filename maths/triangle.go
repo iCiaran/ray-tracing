@@ -54,6 +54,8 @@ func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		} else {
 			rec.SetFaceNormal(r, Cross(e1, e2).Normalise())
 		}
+		rec.U = u
+		rec.V = v
 		rec.Mat = t.Mat
 		return true
 	}

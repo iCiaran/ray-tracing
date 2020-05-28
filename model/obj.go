@@ -33,7 +33,8 @@ func (m *Model) LoadObj(filepath string) *maths.HittableList {
 
 	scanner := bufio.NewScanner(file)
 	l := maths.NewHittableList()
-	mat := maths.NewMetal(maths.NewVec3(0.7, 0.7, 0.7), 0.02)
+	texture := maths.NewTextureSolid(0.7, 0.7, 0.7)
+	mat := maths.NewMetal(texture, 0.01)
 
 	for scanner.Scan() {
 		splitLine := strings.Split(scanner.Text(), " ")

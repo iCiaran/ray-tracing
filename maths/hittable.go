@@ -4,6 +4,8 @@ type HitRecord struct {
 	P         *Point3
 	Normal    *Vec3
 	T         float64
+	U         float64
+	V         float64
 	FrontFace bool
 	Mat       Material
 }
@@ -18,7 +20,7 @@ func (h *HitRecord) SetFaceNormal(r *Ray, outwardNormal *Vec3) {
 }
 
 func NewHitRecord() *HitRecord {
-	return &HitRecord{NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0), 0, false, nil}
+	return &HitRecord{NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0), 0.0, 0.0, 0.0, false, nil}
 }
 
 type Hittable interface {

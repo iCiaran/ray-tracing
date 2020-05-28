@@ -25,6 +25,7 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		temp := (-halfB - root) / a
 		if temp > tMin && temp < tMax {
 			rec.T = temp
+			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
 			rec.P = r.At(rec.T)
 			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
@@ -35,6 +36,7 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		temp = (-halfB + root) / a
 		if temp > tMin && temp < tMax {
 			rec.T = temp
+			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
 			rec.P = r.At(rec.T)
 			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
@@ -49,4 +51,12 @@ func (s *Sphere) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 	*outputBox = *NewAABB(Sub(s.Center, NewVec3(s.Radius, s.Radius, s.Radius)),
 		Add(s.Center, NewVec3(s.Radius, s.Radius, s.Radius)))
 	return true
+}
+
+func getSphereUV(p *Vec3) (float64, float64) {
+	phi := math.Atan2(p.Z(), p.X())
+	theta := math.Asin(p.Y())
+	u := 1 - (phi+math.Pi)/(2*math.Pi)
+	v := (theta + math.Pi/2) / math.Pi
+	return u, v
 }
