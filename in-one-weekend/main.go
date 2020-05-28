@@ -37,7 +37,7 @@ func main() {
 	model := model.NewModel()
 	world := model.LoadObj("../resources/teapot-normals.obj")
 
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, -1008.0, 0.0), 1000.0, maths.NewLambertian(maths.NewVec3(0.2, 0.2, 0.2))))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, -1008.0, 0.0), 1000.0, maths.NewLambertian(maths.NewTextureSolid(0.2, 0.2, 0.2))))
 	start := time.Now()
 
 	fmt.Printf("P3\n%d %d\n255\n", imageWidth, imageHeight)
@@ -81,15 +81,15 @@ func rayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int) *maths.C
 func randomScene() *maths.HittableList {
 	world := maths.NewHittableList()
 
-	groundMaterial := maths.NewLambertian(maths.NewVec3(0.5, 0.5, 0.5))
+	groundMaterial := maths.NewLambertian(maths.NewTextureSolid(0.5, 0.5, 0.5))
 	world.Add(maths.NewSphere(maths.NewVec3(0.0, -1000.0, 0.0), 1000.0, groundMaterial))
 	bigA := maths.NewVec3(0.0, 1.0, 0.0)
 	bigB := maths.NewVec3(-4.0, 1.0, 0.0)
 	bigC := maths.NewVec3(4.0, 1.0, 0.0)
 
 	matA := maths.NewDielectric(1.5)
-	matB := maths.NewLambertian(maths.NewVec3(0.2, 0.0, 0.25))
-	matC := maths.NewMetal(maths.NewVec3(0.7, 0.6, 0.5), 0.0)
+	matB := maths.NewLambertian(maths.NewTextureSolid(0.2, 0.0, 0.25))
+	matC := maths.NewMetal(maths.NewTextureSolid(0.7, 0.6, 0.5), 0.0)
 
 	world.Add(maths.NewSphere(bigA, 1.0, matA))
 	world.Add(maths.NewSphere(bigB, 1.0, matB))
@@ -109,24 +109,24 @@ func randomScene() *maths.HittableList {
 				switch {
 				case chooseMat < 0.3:
 					albedo := maths.MulVec(maths.RandomPoint(), maths.RandomPoint())
-					mat := maths.NewLambertian(albedo)
+					mat := maths.NewLambertian(maths.NewTextureSolid(albedo.X(), albedo.Y(), albedo.Z()))
 					world.Add(maths.NewSphere(center, r, mat))
 				case chooseMat < 0.6:
 					albedo := maths.RandomPointInRange(0.5, 1.0)
 					fuzz := maths.RandomInRange(0.0, 0.5)
-					mat := maths.NewMetal(albedo, fuzz)
+					mat := maths.NewMetal(maths.NewTextureSolid(albedo.X(), albedo.Y(), albedo.Z()), fuzz)
 					world.Add(maths.NewSphere(center, r, mat))
 				case chooseMat < 0.7:
 					mat := maths.NewDielectric(1.5)
 					world.Add(maths.NewSphere(center, r, mat))
 				case chooseMat < 0.8:
 					albedo := maths.MulVec(maths.RandomPoint(), maths.RandomPoint())
-					mat := maths.NewLambertian(albedo)
+					mat := maths.NewLambertian(maths.NewTextureSolid(albedo.X(), albedo.Y(), albedo.Z()))
 					addCube(world, r, center, mat)
 				case chooseMat < 0.9:
 					albedo := maths.RandomPointInRange(0.5, 1.0)
 					fuzz := maths.RandomInRange(0.0, 0.5)
-					mat := maths.NewMetal(albedo, fuzz)
+					mat := maths.NewMetal(maths.NewTextureSolid(albedo.X(), albedo.Y(), albedo.Z()), fuzz)
 					addCube(world, r, center, mat)
 				case chooseMat < 1.0:
 					mat := maths.NewDielectric(1.5)
