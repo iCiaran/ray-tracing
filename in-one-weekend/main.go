@@ -154,30 +154,31 @@ func addCube(world *maths.HittableList, size float64, center *maths.Point3, mat 
 	nRight := maths.NewVec3(1.0, 0.0, 0.0)
 	nUp := maths.NewVec3(0.0, 1.0, 0.0)
 	nDown := maths.NewVec3(0.0, -1.0, 0.0)
+	vZero := maths.NewVec3(0.0, 0.0, 0.0)
 
 	// Front v3 v4 v2 / v2 v1 v3
-	world.Add(maths.NewTriangle(v3, v4, v2, nFront, nFront, nFront, mat, true))
-	world.Add(maths.NewTriangle(v2, v1, v3, nFront, nFront, nFront, mat, true))
+	world.Add(maths.NewTriangle(v3, v4, v2, nFront, nFront, nFront, vZero, vZero, vZero, mat, true))
+	world.Add(maths.NewTriangle(v2, v1, v3, nFront, nFront, nFront, vZero, vZero, vZero, mat, true))
 
 	// Back v8 v7 v5 / v5 v6 v8
-	world.Add(maths.NewTriangle(v8, v7, v5, nBack, nBack, nBack, mat, true))
-	world.Add(maths.NewTriangle(v5, v6, v8, nBack, nBack, nBack, mat, true))
+	world.Add(maths.NewTriangle(v8, v7, v5, nBack, nBack, nBack, vZero, vZero, vZero, mat, true))
+	world.Add(maths.NewTriangle(v5, v6, v8, nBack, nBack, nBack, vZero, vZero, vZero, mat, true))
 
 	// Right v4 v8 v6 / v6 v2 v4
-	world.Add(maths.NewTriangle(v4, v8, v6, nRight, nRight, nRight, mat, true))
-	world.Add(maths.NewTriangle(v6, v2, v4, nRight, nRight, nRight, mat, true))
+	world.Add(maths.NewTriangle(v4, v8, v6, nRight, nRight, nRight, vZero, vZero, vZero, mat, true))
+	world.Add(maths.NewTriangle(v6, v2, v4, nRight, nRight, nRight, vZero, vZero, vZero, mat, true))
 
 	// Left v7 v3 v1 / v1 v5 v7
-	world.Add(maths.NewTriangle(v7, v3, v1, nLeft, nLeft, nLeft, mat, true))
-	world.Add(maths.NewTriangle(v1, v5, v7, nLeft, nLeft, nLeft, mat, true))
+	world.Add(maths.NewTriangle(v7, v3, v1, nLeft, nLeft, nLeft, vZero, vZero, vZero, mat, true))
+	world.Add(maths.NewTriangle(v1, v5, v7, nLeft, nLeft, nLeft, vZero, vZero, vZero, mat, true))
 
 	// Top v1 v2 v6 / v6 v5 v1
-	world.Add(maths.NewTriangle(v1, v2, v6, nUp, nUp, nUp, mat, true))
-	world.Add(maths.NewTriangle(v6, v5, v1, nUp, nUp, nUp, mat, true))
+	world.Add(maths.NewTriangle(v1, v2, v6, nUp, nUp, nUp, vZero, vZero, vZero, mat, true))
+	world.Add(maths.NewTriangle(v6, v5, v1, nUp, nUp, nUp, vZero, vZero, vZero, mat, true))
 
 	// Bottom v4 v3 v7 / v7 v8 v4
-	world.Add(maths.NewTriangle(v4, v3, v7, nDown, nDown, nDown, mat, true))
-	world.Add(maths.NewTriangle(v7, v8, v4, nDown, nDown, nDown, mat, true))
+	world.Add(maths.NewTriangle(v4, v3, v7, nDown, nDown, nDown, vZero, vZero, vZero, mat, true))
+	world.Add(maths.NewTriangle(v7, v8, v4, nDown, nDown, nDown, vZero, vZero, vZero, mat, true))
 }
 
 func pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *maths.HittableList, cam *maths.Camera) *maths.Colour {
