@@ -1,6 +1,8 @@
 package maths
 
-import "math"
+import (
+	"math"
+)
 
 type Sphere struct {
 	Center *Point3
@@ -25,8 +27,8 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		temp := (-halfB - root) / a
 		if temp > tMin && temp < tMax {
 			rec.T = temp
-			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
 			rec.P = r.At(rec.T)
+			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
 			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
 			rec.Mat = s.Mat
@@ -36,8 +38,8 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		temp = (-halfB + root) / a
 		if temp > tMin && temp < tMax {
 			rec.T = temp
-			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
 			rec.P = r.At(rec.T)
+			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
 			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
 			rec.Mat = s.Mat

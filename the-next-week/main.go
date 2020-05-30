@@ -33,14 +33,10 @@ func main() {
 
 	cam := maths.NewCamera(lookFrom, lookAt, up, vFov, aspectRatio, aperture, distToFocus)
 
-	textureA := maths.NewTextureSolid(0.2, 0.3, 0.1)
-	textureB := maths.NewTextureSolid(0.9, 0.9, 0.9)
-
-	texture := maths.NewTextureChecker(textureA, textureB, 0.1)
+	texture := maths.NewTextureImage("../resources/earthmap.jpg")
 
 	world := maths.NewHittableList()
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, -10.0, 0.0), 10.0, maths.NewLambertian(texture)))
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, 10.0, 0.0), 10.0, maths.NewLambertian(texture)))
+	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, 0.0), 2.0, maths.NewLambertian(texture)))
 
 	start := time.Now()
 
@@ -73,6 +69,7 @@ func rayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int) *maths.C
 
 		if rec.Mat.Scatter(r, rec, attenuation, scattered) {
 			return maths.MulVec(attenuation, rayColour(scattered, world, maxDepth, depth-1))
+
 		}
 		return maths.NewVec3(0.0, 0.0, 0.0)
 	}
