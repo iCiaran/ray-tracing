@@ -1,16 +1,19 @@
 package maths
 
-import "math"
+import (
+	"math"
+)
 
 type Triangle struct {
 	V      []*Point3
 	N      []*Vec3
+	T      []*Point3
 	Mat    Material
 	smooth bool
 }
 
-func NewTriangle(va, vb, vc *Point3, na, nb, nc *Vec3, mat Material, smooth bool) *Triangle {
-	return &Triangle{[]*Point3{va, vb, vc}, []*Vec3{na, nb, nc}, mat, smooth}
+func NewTriangle(va, vb, vc *Point3, na, nb, nc *Vec3, ta, tb, tc *Vec3, mat Material, smooth bool) *Triangle {
+	return &Triangle{[]*Point3{va, vb, vc}, []*Vec3{na, nb, nc}, []*Point3{ta, tb, tc}, mat, smooth}
 }
 
 func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
@@ -50,12 +53,13 @@ func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		rec.T = tr
 		rec.P = r.At(rec.T)
 		if t.smooth {
-			rec.SetFaceNormal(r, t.smoothNormal(u, v))
+			rec.SetFaceNormal(r, interpolate(u, v, t.N[0], t.N[1], t.N[2]).Normalise())
 		} else {
 			rec.SetFaceNormal(r, Cross(e1, e2).Normalise())
 		}
-		rec.U = u
-		rec.V = v
+		texUV := interpolate(u, v, t.T[0], t.T[1], t.T[2])
+		rec.U = texUV.X()
+		rec.V = texUV.Y()
 		rec.Mat = t.Mat
 		return true
 	}
@@ -75,6 +79,6 @@ func (t *Triangle) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 	return true
 }
 
-func (t *Triangle) smoothNormal(u, v float64) *Vec3 {
-	return Mul(t.N[0], 1.0-u-v).Add(Mul(t.N[1], u)).Add(Mul(t.N[2], v)).Normalise()
+func interpolate(u, v float64, a, b, c *Vec3) *Vec3 {
+	return Mul(a, 1.0-u-v).Add(Mul(b, u)).Add(Mul(c, v))
 }

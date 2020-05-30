@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/iCiaran/ray-tracing/maths"
+	"github.com/iCiaran/ray-tracing/model"
 )
 
 var maxBounce = 0
@@ -33,10 +34,11 @@ func main() {
 
 	cam := maths.NewCamera(lookFrom, lookAt, up, vFov, aspectRatio, aperture, distToFocus)
 
-	texture := maths.NewTextureImage("../resources/earthmap.jpg")
+	model := model.NewModel()
+	capsule := model.LoadObj("../resources/capsule.obj")
 
 	world := maths.NewHittableList()
-	world.Add(maths.NewSphere(maths.NewVec3(0.0, 0.0, 0.0), 2.0, maths.NewLambertian(texture)))
+	world.Add(maths.NewBVHNode(capsule, 0.0, 1.0))
 
 	start := time.Now()
 
