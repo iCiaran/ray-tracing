@@ -1,18 +1,20 @@
 package maths
 
+import "github.com/iCiaran/ray-tracing/maths"
+
 type Metal struct {
-	Albedo Texture
+	Albedo texture.Texture
 	fuzz   float64
 }
 
-func NewMetal(albedo Texture, fuzz float64) *Metal {
-	return &Metal{albedo, Clamp(fuzz, 0.0, 1.0)}
+func NewMetal(albedo texture.Texture, fuzz float64) *Metal {
+	return &Metal{albedo, maths.Clamp(fuzz, 0.0, 1.0)}
 }
 
-func (m *Metal) Scatter(rIn *Ray, rec *HitRecord, attenuation *Colour, scattered *Ray) bool {
-	reflected := Reflect(Normalise(rIn.Direction()), rec.Normal)
-	*scattered = *NewRay(rec.P, reflected.Add(Mul(RandomInUnitSphere(), m.fuzz)))
+func (m *Metal) Scatter(rIn *maths.Ray, rec *hittable.HitRecord, attenuation *maths.Colour, scattered *maths.Ray) bool {
+	reflected := maths.Reflect(maths.Normalise(rIn.Direction()), rec.Normal)
+	*scattered = *maths.NewRay(rec.P, reflected.Add(maths.Mul(maths.RandomInUnitSphere(), m.fuzz)))
 	*attenuation = *m.Albedo.Value(rec.U, rec.V, rec.P)
 
-	return Dot(scattered.Direction(), rec.Normal) > 0
+	return maths.Dot(scattered.Direction(), rec.Normal) > 0
 }
