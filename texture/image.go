@@ -6,15 +6,17 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"os"
+
+	"github.com/iCiaran/ray-tracing/maths"
 )
 
-type TextureImage struct {
+type Image struct {
 	I      image.Image
 	width  int
 	height int
 }
 
-func NewTextureImage(filepath string) *TextureImage {
+func NewImage(filepath string) *Image {
 	reader, err := os.Open(filepath)
 	if err != nil {
 		fmt.Fprint(os.Stderr, err)
@@ -34,16 +36,16 @@ func NewTextureImage(filepath string) *TextureImage {
 
 	fmt.Fprintf(os.Stderr, "%v\n", config)
 
-	return &TextureImage{m, config.Width, config.Height}
+	return &Image{m, config.Width, config.Height}
 }
 
-func (ti *TextureImage) Value(u, v float64, p *Vec3) *Colour {
+func (ti *Image) Value(u, v float64, p *maths.Vec3) *maths.Colour {
 	if ti.I == nil {
-		return NewVec3(0.0, 1.0, 1.0)
+		return maths.NewVec3(0.0, 1.0, 1.0)
 	}
 
-	u = Clamp(u, 0.0, 1.0)
-	v = 1.0 - Clamp(v, 0.0, 1.0)
+	u = maths.Clamp(u, 0.0, 1.0)
+	v = 1.0 - maths.Clamp(v, 0.0, 1.0)
 
 	i := int(float64(ti.width) * u)
 	j := int(float64(ti.height) * v)
@@ -51,5 +53,5 @@ func (ti *TextureImage) Value(u, v float64, p *Vec3) *Colour {
 
 	scale := 1.0 / 65535.0
 
-	return NewVec3(float64(r)*scale, float64(g)*scale, float64(b)*scale)
+	return maths.NewVec3(float64(r)*scale, float64(g)*scale, float64(b)*scale)
 }
