@@ -1,17 +1,19 @@
 package maths
 
+import "github.com/iCiaran/ray-tracing/maths"
+
 type HitRecord struct {
-	P         *Point3
-	Normal    *Vec3
+	P         *maths.Point3
+	Normal    *maths.Vec3
 	T         float64
 	U         float64
 	V         float64
 	FrontFace bool
-	Mat       Material
+	Mat       material.Material
 }
 
-func (h *HitRecord) SetFaceNormal(r *Ray, outwardNormal *Vec3) {
-	h.FrontFace = Dot(r.Direction(), outwardNormal) < 0
+func (h *HitRecord) SetFaceNormal(r *maths.Ray, outwardNormal *maths.Vec3) {
+	h.FrontFace = maths.Dot(r.Direction(), outwardNormal) < 0
 	h.Normal = outwardNormal
 
 	if !h.FrontFace {
@@ -20,10 +22,10 @@ func (h *HitRecord) SetFaceNormal(r *Ray, outwardNormal *Vec3) {
 }
 
 func NewHitRecord() *HitRecord {
-	return &HitRecord{NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0), 0.0, 0.0, 0.0, false, nil}
+	return &HitRecord{maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0), 0.0, 0.0, 0.0, false, nil}
 }
 
 type Hittable interface {
-	Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool
+	Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool
 	BoundingBox(t0, t1 float64, outputBox *AABB) bool
 }

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"sort"
+
+	"github.com/iCiaran/ray-tracing/maths"
 )
 
 type BVHNode struct {
@@ -19,10 +21,10 @@ func NewBVHNode(list *HittableList, t0, t1 float64) *BVHNode {
 }
 
 func newBVHNode(objects []Hittable, start, end int, t0, t1 float64) *BVHNode {
-	axis := RandomIntInRange(0, 2)
+	axis := maths.RandomIntInRange(0, 2)
 	objectSpan := end - start
 
-	n := &BVHNode{nil, nil, NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))}
+	n := &BVHNode{nil, nil, NewAABB(maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0))}
 	if objectSpan == 1 {
 		n.left = objects[start]
 		n.right = objects[start]
@@ -43,8 +45,8 @@ func newBVHNode(objects []Hittable, start, end int, t0, t1 float64) *BVHNode {
 		n.right = newBVHNode(objects, mid, end, t0, t1)
 	}
 
-	boxLeft := NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))
-	boxRight := NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))
+	boxLeft := NewAABB(maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0))
+	boxRight := NewAABB(maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0))
 
 	if !n.left.BoundingBox(t0, t1, boxLeft) || !n.right.BoundingBox(t0, t1, boxRight) {
 		fmt.Fprint(os.Stderr, "No bounding box in bvh_node constructor.\n")
@@ -54,7 +56,7 @@ func newBVHNode(objects []Hittable, start, end int, t0, t1 float64) *BVHNode {
 	return n
 }
 
-func (n *BVHNode) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
+func (n *BVHNode) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
 	if !n.box.Hit(r, tMin, tMax) {
 		return false
 	}
@@ -77,8 +79,8 @@ func (n *BVHNode) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 }
 
 func boxCompare(a, b Hittable, axis int) bool {
-	boxA := NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))
-	boxB := NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))
+	boxA := NewAABB(maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0))
+	boxB := NewAABB(maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0))
 
 	if !a.BoundingBox(0.0, 0.0, boxA) || !b.BoundingBox(0.0, 0.0, boxB) {
 		fmt.Fprint(os.Stderr, "No bounding box in bvh_node constructor.\n")

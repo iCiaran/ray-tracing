@@ -2,22 +2,24 @@ package maths
 
 import (
 	"math"
+
+	"github.com/iCiaran/ray-tracing/maths"
 )
 
 type Sphere struct {
-	Center *Point3
+	Center *maths.Point3
 	Radius float64
-	Mat    Material
+	Mat    material.Material
 }
 
-func NewSphere(center *Point3, radius float64, mat Material) *Sphere {
+func NewSphere(center *maths.Point3, radius float64, mat material.Material) *Sphere {
 	return &Sphere{center, radius, mat}
 }
 
-func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
-	oc := Sub(r.Origin(), s.Center)
+func (s *Sphere) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
+	oc := maths.Sub(r.Origin(), s.Center)
 	a := r.Direction().LenSquared()
-	halfB := Dot(oc, r.Direction())
+	halfB := maths.Dot(oc, r.Direction())
 	c := oc.LenSquared() - s.Radius*s.Radius
 	discriminant := halfB*halfB - a*c
 
@@ -28,8 +30,8 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if temp > tMin && temp < tMax {
 			rec.T = temp
 			rec.P = r.At(rec.T)
-			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
-			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
+			rec.U, rec.V = getSphereUV(maths.Sub(rec.P, s.Center).Div(s.Radius))
+			outwardNormal := maths.Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
 			rec.Mat = s.Mat
 			return true
@@ -39,8 +41,8 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if temp > tMin && temp < tMax {
 			rec.T = temp
 			rec.P = r.At(rec.T)
-			rec.U, rec.V = getSphereUV(Sub(rec.P, s.Center).Div(s.Radius))
-			outwardNormal := Sub(rec.P, s.Center).Div(s.Radius)
+			rec.U, rec.V = getSphereUV(maths.Sub(rec.P, s.Center).Div(s.Radius))
+			outwardNormal := maths.Sub(rec.P, s.Center).Div(s.Radius)
 			rec.SetFaceNormal(r, outwardNormal)
 			rec.Mat = s.Mat
 			return true
@@ -50,12 +52,12 @@ func (s *Sphere) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 }
 
 func (s *Sphere) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
-	*outputBox = *NewAABB(Sub(s.Center, NewVec3(s.Radius, s.Radius, s.Radius)),
-		Add(s.Center, NewVec3(s.Radius, s.Radius, s.Radius)))
+	*outputBox = *NewAABB(maths.Sub(s.Center, maths.NewVec3(s.Radius, s.Radius, s.Radius)),
+		maths.Add(s.Center, maths.NewVec3(s.Radius, s.Radius, s.Radius)))
 	return true
 }
 
-func getSphereUV(p *Vec3) (float64, float64) {
+func getSphereUV(p *maths.Vec3) (float64, float64) {
 	phi := math.Atan2(p.Z(), p.X())
 	theta := math.Asin(p.Y())
 	u := 1 - (phi+math.Pi)/(2*math.Pi)

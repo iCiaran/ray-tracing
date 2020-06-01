@@ -2,46 +2,48 @@ package maths
 
 import (
 	"math"
+
+	"github.com/iCiaran/ray-tracing/maths"
 )
 
 type Triangle struct {
-	V      []*Point3
-	N      []*Vec3
-	T      []*Point3
-	Mat    Material
+	V      []*maths.Point3
+	N      []*maths.Vec3
+	T      []*maths.Point3
+	Mat    material.Material
 	smooth bool
 }
 
-func NewTriangle(va, vb, vc *Point3, na, nb, nc *Vec3, ta, tb, tc *Vec3, mat Material, smooth bool) *Triangle {
-	return &Triangle{[]*Point3{va, vb, vc}, []*Vec3{na, nb, nc}, []*Point3{ta, tb, tc}, mat, smooth}
+func NewTriangle(va, vb, vc, na, nb, nc, ta, tb, tc *maths.Vec3, mat material.Material, smooth bool) *Triangle {
+	return &Triangle{[]*maths.Point3{va, vb, vc}, []*maths.Vec3{na, nb, nc}, []*maths.Point3{ta, tb, tc}, mat, smooth}
 }
 
-func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
-	e1 := Sub(t.V[1], t.V[0])
-	e2 := Sub(t.V[2], t.V[0])
+func (t *Triangle) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
+	e1 := maths.Sub(t.V[1], t.V[0])
+	e2 := maths.Sub(t.V[2], t.V[0])
 
-	pv := Cross(r.Direction(), e2)
-	det := Dot(e1, pv)
+	pv := maths.Cross(r.Direction(), e2)
+	det := maths.Dot(e1, pv)
 
 	if det < 0.001 {
 		return false
 	}
 
-	tv := Sub(r.Origin(), t.V[0])
-	u := Dot(tv, pv)
+	tv := maths.Sub(r.Origin(), t.V[0])
+	u := maths.Dot(tv, pv)
 
 	if u < 0.0 || u > det {
 		return false
 	}
 
-	qv := Cross(tv, e1)
+	qv := maths.Cross(tv, e1)
 
-	v := Dot(r.Direction(), qv)
+	v := maths.Dot(r.Direction(), qv)
 	if v < 0 || (u+v) > det {
 		return false
 	}
 
-	tr := Dot(e2, qv)
+	tr := maths.Dot(e2, qv)
 
 	invDet := 1.0 / det
 
@@ -55,7 +57,7 @@ func (t *Triangle) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
 		if t.smooth {
 			rec.SetFaceNormal(r, interpolate(u, v, t.N[0], t.N[1], t.N[2]).Normalise())
 		} else {
-			rec.SetFaceNormal(r, Cross(e1, e2).Normalise())
+			rec.SetFaceNormal(r, maths.Cross(e1, e2).Normalise())
 		}
 		texUV := interpolate(u, v, t.T[0], t.T[1], t.T[2])
 		rec.U = texUV.X()
@@ -75,10 +77,10 @@ func (t *Triangle) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 	bigY := math.Max(math.Max(t.V[0].Y(), t.V[1].Y()), t.V[2].Y())
 	bigZ := math.Max(math.Max(t.V[0].Z(), t.V[1].Z()), t.V[2].Z())
 
-	*outputBox = *NewAABB(NewVec3(smallX, smallY, smallZ), NewVec3(bigX, bigY, bigZ))
+	*outputBox = *NewAABB(maths.NewVec3(smallX, smallY, smallZ), maths.NewVec3(bigX, bigY, bigZ))
 	return true
 }
 
-func interpolate(u, v float64, a, b, c *Vec3) *Vec3 {
-	return Mul(a, 1.0-u-v).Add(Mul(b, u)).Add(Mul(c, v))
+func interpolate(u, v float64, a, b, c *maths.Vec3) *maths.Vec3 {
+	return maths.Mul(a, 1.0-u-v).Add(maths.Mul(b, u)).Add(maths.Mul(c, v))
 }

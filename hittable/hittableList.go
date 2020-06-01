@@ -1,5 +1,7 @@
 package maths
 
+import "github.com/iCiaran/ray-tracing/maths"
+
 type HittableList struct {
 	objects []Hittable
 }
@@ -8,7 +10,7 @@ func NewHittableList() *HittableList {
 	return &HittableList{make([]Hittable, 0)}
 }
 
-func (l *HittableList) Hit(r *Ray, tMin, tMax float64, rec *HitRecord) bool {
+func (l *HittableList) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
 	tempRec := NewHitRecord()
 	hitAnything := false
 	closest := tMax
@@ -29,7 +31,7 @@ func (l *HittableList) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 		return false
 	}
 
-	tempBox := NewAABB(NewVec3(0.0, 0.0, 0.0), NewVec3(0.0, 0.0, 0.0))
+	tempBox := NewAABB(maths.NewVec3(0.0, 0.0, 0.0), maths.NewVec3(0.0, 0.0, 0.0))
 	firstBox := true
 
 	for _, o := range l.objects {
