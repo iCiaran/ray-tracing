@@ -1,8 +1,9 @@
-package maths
+package hittable
 
 import (
 	"math"
 
+	"github.com/iCiaran/ray-tracing/hittable/hitmatrecord"
 	"github.com/iCiaran/ray-tracing/maths"
 )
 
@@ -15,7 +16,7 @@ func NewAABB(a, b *maths.Point3) *AABB {
 	return &AABB{a, b}
 }
 
-func (a *AABB) Hit(r *maths.Ray, tMin, tMax float64) bool {
+func (a *AABB) Hit(r *maths.Ray, tMin, tMax float64, rec *hitmatrecord.HitMatRecord) bool {
 	for i := 0; i < 3; i++ {
 		invD := 1.0 / r.Direction()[i]
 		t0 := invD * (a.min[i] - r.Origin()[i])

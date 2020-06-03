@@ -7,7 +7,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/iCiaran/ray-tracing/hittable"
+	"github.com/iCiaran/ray-tracing/material"
 	"github.com/iCiaran/ray-tracing/maths"
+	"github.com/iCiaran/ray-tracing/texture"
 )
 
 type Model struct {
@@ -27,15 +30,15 @@ func check(err error, info interface{}) {
 	}
 }
 
-func (m *Model) LoadObj(filepath string) *maths.HittableList {
+func (m *Model) LoadObj(filepath string) *hittable.List {
 	file, err := os.Open(filepath)
 	check(err, filepath)
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	l := maths.NewHittableList()
-	texture := maths.NewTextureImage("../resources/capsule0.jpg")
-	mat := maths.NewMetal(texture, 0.01)
+	l := hittable.NewList()
+	texture := texture.NewImage("../resources/capsule0.jpg")
+	mat := material.NewMetal(texture, 0.01)
 	zv := maths.NewVec3(0.0, 0.0, 0.0)
 
 	for scanner.Scan() {
@@ -71,7 +74,7 @@ func (m *Model) LoadObj(filepath string) *maths.HittableList {
 				e1 := maths.Sub(m.V[j-1], m.V[i-1])
 				e2 := maths.Sub(m.V[k-1], m.V[i-1])
 				n := maths.Cross(e1, e2).Normalise()
-				l.Add(maths.NewTriangle(m.V[i-1], m.V[j-1], m.V[k-1], n, n, n, zv, zv, zv, mat, false))
+				l.Add(hittable.NewTriangle(m.V[i-1], m.V[j-1], m.V[k-1], n, n, n, zv, zv, zv, mat, false))
 			} else if len(iSplit) == 3 {
 				in, err := strconv.Atoi(iSplit[2])
 				check(err, iSplit)
@@ -86,9 +89,9 @@ func (m *Model) LoadObj(filepath string) *maths.HittableList {
 					check(err, iSplit)
 					kt, err := strconv.Atoi(kSplit[1])
 					check(err, iSplit)
-					l.Add(maths.NewTriangle(m.V[i-1], m.V[j-1], m.V[k-1], m.N[in-1], m.N[jn-1], m.N[kn-1], m.T[it-1], m.T[jt-1], m.T[kt-1], mat, true))
+					l.Add(hittable.NewTriangle(m.V[i-1], m.V[j-1], m.V[k-1], m.N[in-1], m.N[jn-1], m.N[kn-1], m.T[it-1], m.T[jt-1], m.T[kt-1], mat, true))
 				} else {
-					l.Add(maths.NewTriangle(m.V[i-1], m.V[j-1], m.V[k-1], m.N[in-1], m.N[jn-1], m.N[kn-1], zv, zv, zv, mat, true))
+					l.Add(hittable.NewTriangle(m.V[i-1], m.V[j-1], m.V[k-1], m.N[in-1], m.N[jn-1], m.N[kn-1], zv, zv, zv, mat, true))
 				}
 			}
 		case "vn":

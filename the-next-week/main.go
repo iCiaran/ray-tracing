@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/iCiaran/ray-tracing/hittable"
+	"github.com/iCiaran/ray-tracing/hittable/hitmatrecord"
 	"github.com/iCiaran/ray-tracing/maths"
 	"github.com/iCiaran/ray-tracing/model"
 )
@@ -37,8 +39,8 @@ func main() {
 	model := model.NewModel()
 	capsule := model.LoadObj("../resources/capsule.obj")
 
-	world := maths.NewHittableList()
-	world.Add(maths.NewBVHNode(capsule, 0.0, 1.0))
+	world := hittable.NewList()
+	world.Add(hittable.NewBVHNode(capsule, 0.0, 1.0))
 
 	start := time.Now()
 
@@ -55,7 +57,7 @@ func main() {
 	fmt.Fprintf(os.Stderr, "Done Time: %v -- Max Bounces: %d\n", time.Now().Sub(start), maxBounce)
 }
 
-func rayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int) *maths.Colour {
+func rayColour(r *maths.Ray, world hittable.Hittable, maxDepth, depth int) *maths.Colour {
 	if maxDepth-depth > maxBounce {
 		maxBounce = maxDepth - depth
 	}
@@ -64,12 +66,12 @@ func rayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int) *maths.C
 		return maths.NewVec3(0.0, 0.0, 0.0)
 	}
 
-	rec := maths.NewHitRecord()
+	rec := hitmatrecord.New()
 	if world.Hit(r, 0.001, math.Inf(1), rec) {
 		scattered := maths.NewEmptyRay()
 		attenuation := maths.NewVec3(0.0, 0.0, 0.0)
 
-		if rec.Mat.Scatter(r, rec, attenuation, scattered) {
+		if rec.Mat.Scatter(r, rec.Rec, attenuation, scattered) {
 			return maths.MulVec(attenuation, rayColour(scattered, world, maxDepth, depth-1))
 
 		}
@@ -81,7 +83,7 @@ func rayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int) *maths.C
 	return maths.Add(maths.Mul(&maths.Colour{1.0, 1.0, 1.0}, (1.0-t)), maths.Mul(&maths.Colour{0.5, 0.7, 1.0}, t))
 }
 
-func pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *maths.HittableList, cam *maths.Camera) *maths.Colour {
+func pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *hittable.List, cam *maths.Camera) *maths.Colour {
 	pixelColour := maths.NewVec3(0.0, 0.0, 0.0)
 	for s := 0; s < samplesPerPixel; s++ {
 		u := (float64(i) + maths.Random()) / float64(imageWidth-1)
@@ -92,7 +94,7 @@ func pixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, w
 	return pixelColour
 }
 
-func conPixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *maths.HittableList, cam *maths.Camera) *maths.Colour {
+func conPixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int, world *hittable.List, cam *maths.Camera) *maths.Colour {
 	pixelColour := maths.NewVec3(0.0, 0.0, 0.0)
 	c := make(chan *maths.Vec3, samplesPerPixel)
 	var wg sync.WaitGroup
@@ -113,7 +115,7 @@ func conPixelColour(i, j, imageWidth, imageHeight, samplesPerPixel, maxDepth int
 	return pixelColour
 }
 
-func conRayColour(r *maths.Ray, world maths.Hittable, maxDepth, depth int, c chan *maths.Vec3, wg *sync.WaitGroup) {
+func conRayColour(r *maths.Ray, world hittable.Hittable, maxDepth, depth int, c chan *maths.Vec3, wg *sync.WaitGroup) {
 	defer wg.Done()
 	c <- rayColour(r, world, maxDepth, depth)
 }

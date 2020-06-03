@@ -1,8 +1,10 @@
-package maths
+package hittable
 
 import (
 	"math"
 
+	"github.com/iCiaran/ray-tracing/hittable/hitmatrecord"
+	"github.com/iCiaran/ray-tracing/material"
 	"github.com/iCiaran/ray-tracing/maths"
 )
 
@@ -16,7 +18,7 @@ func NewSphere(center *maths.Point3, radius float64, mat material.Material) *Sph
 	return &Sphere{center, radius, mat}
 }
 
-func (s *Sphere) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
+func (s *Sphere) Hit(r *maths.Ray, tMin, tMax float64, rec *hitmatrecord.HitMatRecord) bool {
 	oc := maths.Sub(r.Origin(), s.Center)
 	a := r.Direction().LenSquared()
 	halfB := maths.Dot(oc, r.Direction())
@@ -28,22 +30,22 @@ func (s *Sphere) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
 
 		temp := (-halfB - root) / a
 		if temp > tMin && temp < tMax {
-			rec.T = temp
-			rec.P = r.At(rec.T)
-			rec.U, rec.V = getSphereUV(maths.Sub(rec.P, s.Center).Div(s.Radius))
-			outwardNormal := maths.Sub(rec.P, s.Center).Div(s.Radius)
-			rec.SetFaceNormal(r, outwardNormal)
+			rec.Rec.T = temp
+			rec.Rec.P = r.At(rec.Rec.T)
+			rec.Rec.U, rec.Rec.V = getSphereUV(maths.Sub(rec.Rec.P, s.Center).Div(s.Radius))
+			outwardNormal := maths.Sub(rec.Rec.P, s.Center).Div(s.Radius)
+			rec.Rec.SetFaceNormal(r, outwardNormal)
 			rec.Mat = s.Mat
 			return true
 		}
 
 		temp = (-halfB + root) / a
 		if temp > tMin && temp < tMax {
-			rec.T = temp
-			rec.P = r.At(rec.T)
-			rec.U, rec.V = getSphereUV(maths.Sub(rec.P, s.Center).Div(s.Radius))
-			outwardNormal := maths.Sub(rec.P, s.Center).Div(s.Radius)
-			rec.SetFaceNormal(r, outwardNormal)
+			rec.Rec.T = temp
+			rec.Rec.P = r.At(rec.Rec.T)
+			rec.Rec.U, rec.Rec.V = getSphereUV(maths.Sub(rec.Rec.P, s.Center).Div(s.Radius))
+			outwardNormal := maths.Sub(rec.Rec.P, s.Center).Div(s.Radius)
+			rec.Rec.SetFaceNormal(r, outwardNormal)
 			rec.Mat = s.Mat
 			return true
 		}

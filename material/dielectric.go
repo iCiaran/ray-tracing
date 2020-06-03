@@ -1,8 +1,9 @@
-package maths
+package material
 
 import (
 	"math"
 
+	"github.com/iCiaran/ray-tracing/hittable/hitrecord"
 	"github.com/iCiaran/ray-tracing/maths"
 )
 
@@ -14,7 +15,7 @@ func NewDielectric(refIdx float64) *Dielectric {
 	return &Dielectric{refIdx}
 }
 
-func (d *Dielectric) Scatter(rIn *maths.Ray, rec *hittable.HitRecord, attenuation *maths.Colour, scattered *maths.Ray) bool {
+func (d *Dielectric) Scatter(rIn *maths.Ray, rec *hitrecord.HitRecord, attenuation *maths.Colour, scattered *maths.Ray) bool {
 	*attenuation = *maths.NewVec3(1.0, 1.0, 1.0)
 
 	etaiOverEtat := d.refIdx

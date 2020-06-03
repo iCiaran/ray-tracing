@@ -1,8 +1,10 @@
-package maths
+package hittable
 
 import (
 	"math"
 
+	"github.com/iCiaran/ray-tracing/hittable/hitmatrecord"
+	"github.com/iCiaran/ray-tracing/material"
 	"github.com/iCiaran/ray-tracing/maths"
 )
 
@@ -18,7 +20,7 @@ func NewTriangle(va, vb, vc, na, nb, nc, ta, tb, tc *maths.Vec3, mat material.Ma
 	return &Triangle{[]*maths.Point3{va, vb, vc}, []*maths.Vec3{na, nb, nc}, []*maths.Point3{ta, tb, tc}, mat, smooth}
 }
 
-func (t *Triangle) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
+func (t *Triangle) Hit(r *maths.Ray, tMin, tMax float64, rec *hitmatrecord.HitMatRecord) bool {
 	e1 := maths.Sub(t.V[1], t.V[0])
 	e2 := maths.Sub(t.V[2], t.V[0])
 
@@ -52,16 +54,16 @@ func (t *Triangle) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
 	v *= invDet
 
 	if tr > tMin && tr < tMax {
-		rec.T = tr
-		rec.P = r.At(rec.T)
+		rec.Rec.T = tr
+		rec.Rec.P = r.At(rec.Rec.T)
 		if t.smooth {
-			rec.SetFaceNormal(r, interpolate(u, v, t.N[0], t.N[1], t.N[2]).Normalise())
+			rec.Rec.SetFaceNormal(r, interpolate(u, v, t.N[0], t.N[1], t.N[2]).Normalise())
 		} else {
-			rec.SetFaceNormal(r, maths.Cross(e1, e2).Normalise())
+			rec.Rec.SetFaceNormal(r, maths.Cross(e1, e2).Normalise())
 		}
 		texUV := interpolate(u, v, t.T[0], t.T[1], t.T[2])
-		rec.U = texUV.X()
-		rec.V = texUV.Y()
+		rec.Rec.U = texUV.X()
+		rec.Rec.V = texUV.Y()
 		rec.Mat = t.Mat
 		return true
 	}

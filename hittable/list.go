@@ -1,24 +1,27 @@
-package maths
+package hittable
 
-import "github.com/iCiaran/ray-tracing/maths"
+import (
+	"github.com/iCiaran/ray-tracing/hittable/hitmatrecord"
+	"github.com/iCiaran/ray-tracing/maths"
+)
 
-type HittableList struct {
+type List struct {
 	objects []Hittable
 }
 
-func NewHittableList() *HittableList {
-	return &HittableList{make([]Hittable, 0)}
+func NewList() *List {
+	return &List{make([]Hittable, 0)}
 }
 
-func (l *HittableList) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
-	tempRec := NewHitRecord()
+func (l *List) Hit(r *maths.Ray, tMin, tMax float64, rec *hitmatrecord.HitMatRecord) bool {
+	tempRec := hitmatrecord.New()
 	hitAnything := false
 	closest := tMax
 
 	for _, o := range l.objects {
 		if o.Hit(r, tMin, closest, tempRec) {
 			hitAnything = true
-			closest = tempRec.T
+			closest = tempRec.Rec.T
 			*rec = *tempRec
 		}
 	}
@@ -26,7 +29,7 @@ func (l *HittableList) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) boo
 	return hitAnything
 }
 
-func (l *HittableList) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
+func (l *List) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 	if len(l.objects) == 0 {
 		return false
 	}
@@ -50,10 +53,10 @@ func (l *HittableList) BoundingBox(t0, t1 float64, outputBox *AABB) bool {
 	return true
 }
 
-func (l *HittableList) Add(object Hittable) {
+func (l *List) Add(object Hittable) {
 	l.objects = append(l.objects, object)
 }
 
-func (l *HittableList) Clear() {
+func (l *List) Clear() {
 	l.objects = nil
 }

@@ -1,10 +1,11 @@
-package maths
+package hittable
 
 import (
 	"fmt"
 	"os"
 	"sort"
 
+	"github.com/iCiaran/ray-tracing/hittable/hitmatrecord"
 	"github.com/iCiaran/ray-tracing/maths"
 )
 
@@ -14,7 +15,7 @@ type BVHNode struct {
 	box   *AABB
 }
 
-func NewBVHNode(list *HittableList, t0, t1 float64) *BVHNode {
+func NewBVHNode(list *List, t0, t1 float64) *BVHNode {
 	a := newBVHNode(list.objects, 0, len(list.objects), t0, t1)
 	fmt.Fprintf(os.Stderr, "%v %v\n", a.box.min, a.box.max)
 	return a
@@ -56,8 +57,8 @@ func newBVHNode(objects []Hittable, start, end int, t0, t1 float64) *BVHNode {
 	return n
 }
 
-func (n *BVHNode) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
-	if !n.box.Hit(r, tMin, tMax) {
+func (n *BVHNode) Hit(r *maths.Ray, tMin, tMax float64, rec *hitmatrecord.HitMatRecord) bool {
+	if !n.box.Hit(r, tMin, tMax, rec) {
 		return false
 	}
 
@@ -65,7 +66,7 @@ func (n *BVHNode) Hit(r *maths.Ray, tMin, tMax float64, rec *HitRecord) bool {
 	var hitRight bool
 
 	if hitLeft {
-		hitRight = n.right.Hit(r, tMin, rec.T, rec)
+		hitRight = n.right.Hit(r, tMin, rec.Rec.T, rec)
 	} else {
 		hitRight = n.right.Hit(r, tMin, tMax, rec)
 	}
